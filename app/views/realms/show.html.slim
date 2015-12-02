@@ -1,0 +1,9 @@
+p#notice = notice
+
+p
+  strong Name:
+  = @realm.name
+
+= link_to 'Edit', edit_realm_path(@realm)
+'|
+= link_to 'Back', realms_path

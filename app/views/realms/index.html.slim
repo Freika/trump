@@ -1,0 +1,21 @@
+h1 Listing realms
+
+table
+  thead
+    tr
+      th Name
+      th
+      th
+      th
+
+  tbody
+    - @realms.each do |realm|
+      tr
+        td = realm.name
+        td = link_to 'Show', realm
+        td = link_to 'Edit', edit_realm_path(realm)
+        td = link_to 'Destroy', realm, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Realm', new_realm_path
