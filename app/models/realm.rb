@@ -3,11 +3,22 @@ class Realm < ActiveRecord::Base
   has_many :auction_items
   validates :name, presence: true
 
+  def get_fresh_data
+    AuctionWorker.perform_async(self.id)
+  end
+
   def download_json
-    url = get_auction_url
-    response = HTTParty.get(url)
-    open("public/temp/#{self.name}.json", 'wb') do |file|
-      file.write(response.body)
+    auction_info = get_auction_url
+
+    if self.last_modified != auction_info[:last_modified].to_s
+      self.last_modified = auction_info[:last_modified].to_s
+      self.save
+
+      response = HTTParty.get(auction_info[:url])
+      open("public/temp/#{self.name}.json", 'wb') do |file|
+        file.write(response.body)
+      end
+      self.parse_json
     end
   end
 
@@ -37,6 +48,9 @@ class Realm < ActiveRecord::Base
   def get_auction_url
     url = "https://eu.api.battle.net/wow/auction/data/#{self.name}?locale=ru_RU&apikey=#{ENV['bnet_api_key']}"
     response = HTTParty.get(url)
-    response['files'][0]['url']
+    {
+      url: response['files'][0]['url'],
+      last_modified: response['files'][0]['lastModified']
+    }
   end
 end
