@@ -1,5 +1,7 @@
 h1 Listing realms
 
+h3 = Item.count
+
 table
   thead
     tr
@@ -15,6 +17,8 @@ table
         td = link_to realm.name, realm
         td = link_to 'Edit', edit_realm_path(realm)
         td = link_to 'Destroy', realm, data: {:confirm => 'Are you sure?'}, :method => :delete
+        td = realm.auction_items.count
+        td = realm.characters.count
 
 br
 

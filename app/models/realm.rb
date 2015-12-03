@@ -1,5 +1,6 @@
 class Realm < ActiveRecord::Base
   has_many :characters
+  has_many :auction_items
   validates :name, presence: true
 
   def download_json
