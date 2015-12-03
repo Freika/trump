@@ -82,6 +82,7 @@ GEM
     mime-types (2.99)
     mini_portile2 (2.0.0)
     minitest (5.8.3)
+    multi_json (1.11.2)
     multi_xml (0.5.5)
     nokogiri (1.6.7)
       mini_portile2 (~> 2.0.0.rc2)
@@ -116,6 +117,8 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rake (10.4.2)
     redis (3.2.2)
+    rollbar (2.4.0)
+      multi_json
     sass (3.4.19)
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
@@ -178,6 +181,7 @@ DEPENDENCIES
   oj
   pg
   rails (= 4.2.4)
+  rollbar (~> 2.4.0)
   sass-rails (~> 5.0)
   sidekiq
   simple_form
