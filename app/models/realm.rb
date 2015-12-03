@@ -1,4 +1,5 @@
 class Realm < ActiveRecord::Base
+  has_many :characters
   validates :name, presence: true
 
   def download_json
@@ -14,7 +15,7 @@ class Realm < ActiveRecord::Base
     hash = JSON.parse(file)
     hash['auctions'].each do |lot|
       owner = Character.find_or_initialize_by(
-        name: lot['owner'], realm: lot['ownerRealm']
+        name: lot['owner'], realm_id: self.id
       )
       owner.goods += 1
       owner.save!
@@ -23,9 +24,9 @@ class Realm < ActiveRecord::Base
       item.save
 
       AuctionItem.create(
-        character_id: owner.id, owner_realm: owner.realm, bid: lot['bid'],
+        character_id: owner.id, realm_id: self.id, bid: lot['bid'],
         buyout: lot['buyout'], quantity: lot['quantity'],
-        time_left: lot['timeLeft']
+        time_left: lot['timeLeft'], item_id: item.id
       )
     end
   end

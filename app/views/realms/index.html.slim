@@ -3,16 +3,16 @@ h1 Listing realms
 table
   thead
     tr
-      th Name
       th
       th
       th
+      th Auction Items Total
+      th Characters total
 
   tbody
     - @realms.each do |realm|
       tr
-        td = realm.name
-        td = link_to 'Show', realm
+        td = link_to realm.name, realm
         td = link_to 'Edit', edit_realm_path(realm)
         td = link_to 'Destroy', realm, data: {:confirm => 'Are you sure?'}, :method => :delete
 

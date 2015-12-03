@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151203062156) do
+ActiveRecord::Schema.define(version: 20151203063510) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,11 +22,11 @@ ActiveRecord::Schema.define(version: 20151203062156) do
     t.string   "name",         default: "", null: false
     t.string   "bid",          default: ""
     t.string   "buyout",       default: ""
-    t.string   "owner_realm",  default: "", null: false
     t.integer  "quantity",     default: 0
     t.string   "time_left",    default: "", null: false
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.integer  "realm_id",     default: 0,  null: false
   end
 
   add_index "auction_items", ["bid"], name: "index_auction_items_on_bid", using: :btree
@@ -34,16 +34,18 @@ ActiveRecord::Schema.define(version: 20151203062156) do
   add_index "auction_items", ["character_id"], name: "index_auction_items_on_character_id", using: :btree
   add_index "auction_items", ["item_id"], name: "index_auction_items_on_item_id", using: :btree
   add_index "auction_items", ["quantity"], name: "index_auction_items_on_quantity", using: :btree
+  add_index "auction_items", ["realm_id"], name: "index_auction_items_on_realm_id", using: :btree
 
   create_table "characters", force: :cascade do |t|
     t.string   "name",       default: "", null: false
-    t.string   "realm",      default: "", null: false
     t.integer  "goods",      default: 0
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.integer  "realm_id",   default: 0,  null: false
   end
 
   add_index "characters", ["goods"], name: "index_characters_on_goods", using: :btree
+  add_index "characters", ["realm_id"], name: "index_characters_on_realm_id", using: :btree
 
   create_table "crono_jobs", force: :cascade do |t|
     t.string   "job_id",            null: false
