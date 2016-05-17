@@ -1,6 +1,6 @@
 class Realm < ActiveRecord::Base
-  has_many :characters
-  has_many :auction_items
+  has_many :characters, dependent: :destroy
+  has_many :auction_items, dependent: :destroy
   validates :name, presence: true
 
   def get_fresh_data
@@ -35,18 +35,23 @@ class Realm < ActiveRecord::Base
       item = Item.find_or_initialize_by(wow_id: lot['item'])
       item.save
 
-      AuctionItem.create(
-        character_id: owner.id, realm_id: self.id, bid: lot['bid'],
-        buyout: lot['buyout'], quantity: lot['quantity'],
-        time_left: lot['timeLeft'], item_id: item.id
-      )
+      auction_item = AuctionItem.find_or_create_by(auc: lot['auc'])
+      unless auction_item.persisted?
+        AuctionItem.create(
+          character_id: owner.id, realm_id: self.id, bid: lot['bid'],
+          buyout: lot['buyout'], quantity: lot['quantity'],
+          time_left: lot['timeLeft'], item_id: item.id, auc: lot['auc']
+        )
+      end
     end
   end
 
   private
 
   def get_auction_url
-    url = "https://eu.api.battle.net/wow/auction/data/#{self.name}?locale=ru_RU&apikey=#{ENV['bnet_api_key']}"
+    url = URI.encode(
+      "https://eu.api.battle.net/wow/auction/data/#{self.name}?locale=ru_RU&apikey=#{ENV['bnet_api_key']}"
+    )
     response = HTTParty.get(url)
     {
       url: response['files'][0]['url'],

@@ -1,8 +1,8 @@
 h1 Listing realms
 
-h3 = Item.count
+h3 = "#{Item.count} items total"
 
-table
+table.table.table-bordered
   thead
     tr
       th
@@ -10,6 +10,7 @@ table
       th
       th Auction Items Total
       th Characters total
+      th Last updated
 
   tbody
     - @realms.each do |realm|
@@ -19,7 +20,4 @@ table
         td = link_to 'Destroy', realm, data: {:confirm => 'Are you sure?'}, :method => :delete
         td = realm.auction_items.count
         td = realm.characters.count
-
-br
-
-= link_to 'New Realm', new_realm_path
+        td = "#{time_ago_in_words(realm.updated_at)} ago"
