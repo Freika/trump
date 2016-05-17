@@ -2,10 +2,22 @@ class RealmsController < ApplicationController
   before_action :set_realm, only: [:show, :edit, :update, :destroy]
 
   def index
-    @realms = Realm.includes(:characters).includes(:auction_items).order(name: :asc)
+    @realms = Realm.includes(:characters)
+                   .includes(:auction_items)
+                   .order(name: :asc)
+    @items_count = Item.count
+    @characters_count = Character.count
+    @auction_items_count = AuctionItem.count
   end
 
   def show
+    # @top_sellers = @realm.characters
+    #                      .joins(:auction_items)
+    #                      .group("characters.id")
+    #                      .order("count(characters.id) DESC")
+    #                      .first(10)
+
+    @top_sellers = @realm.characters.order(goods: :desc).first(10)
   end
 
   def new

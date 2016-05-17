@@ -1,6 +1,11 @@
 h2 = "Name: #{@realm.name}"
 
-table.table.table-bordered
+h3 Top sellers
+
+- @top_sellers.each do |character|
+  li = "#{character.name } (#{character.goods})"
+
+table.table.table-bordered.bg-info
   tr
     th Предмет
     th Персонаж
@@ -9,7 +14,9 @@ table.table.table-bordered
     th Оставшееся время
   - @realm.auction_items.last(5).each do |item|
     tr
-      td = "#{item.item.name} (#{item.quantity})"
+      td
+        => link_to "#{item.item.name}", '#', rel: "item=#{item.item.wow_id} domain=ru"
+        = "(#{item.quantity})"
       td = item.character.name
       td = to_gold(item.bid)
       td = to_gold(item.buyout)

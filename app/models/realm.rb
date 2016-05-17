@@ -11,8 +11,7 @@ class Realm < ActiveRecord::Base
     auction_info = get_auction_url
 
     if last_modified != auction_info[:last_modified].to_s
-      last_modified = auction_info[:last_modified].to_s
-      save
+      update(last_modified: auction_info[:last_modified].to_s)
 
       response = HTTParty.get(auction_info[:url])
       open("public/temp/#{name}.json", 'wb') do |file|
@@ -35,19 +34,7 @@ class Realm < ActiveRecord::Base
 
       item = Item.get_and_save(lot['item'])
 
-      auction_item = AuctionItem.find_or_create_by(auc: lot['auc'])
-      unless auction_item.persisted?
-        AuctionItem.create(
-          character_id: owner.id,
-          realm_id: id,
-          bid: lot['bid'],
-          buyout: lot['buyout'],
-          quantity: lot['quantity'],
-          time_left: lot['timeLeft'],
-          item_id: item.id,
-          auc: lot['auc']
-        )
-      end
+      AuctionItemWorker.perform_async(lot, item.id, owner.id, id)
     end
   end
 
