@@ -14,10 +14,10 @@ gem 'rollbar'
 
 gem 'figaro'
 gem 'httparty'
+gem 'haml' # crono depencency
 gem 'crono'
 gem 'sidekiq'
 gem 'oj'
-gem 'addressable'
 gem 'sinatra', require: nil
 gem 'wowrb', github: 'Freika/wowrb'
 

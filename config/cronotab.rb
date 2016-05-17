@@ -16,7 +16,7 @@
 class GetJsons
   def perform
     Realm.all.each do |realm|
-      realm.get_fresh_data
+      realm.refresh_data
     end
   end
 end

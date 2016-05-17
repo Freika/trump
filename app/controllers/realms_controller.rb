@@ -2,7 +2,7 @@ class RealmsController < ApplicationController
   before_action :set_realm, only: [:show, :edit, :update, :destroy]
 
   def index
-    @realms = Realm.all.order(name: :asc)
+    @realms = Realm.includes(:characters).includes(:auction_items).order(name: :asc)
   end
 
   def show

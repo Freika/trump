@@ -1,6 +1,8 @@
 h1 Listing realms
 
 h3 = "#{Item.count} items total"
+h3 = "#{AuctionItem.count} auction items total"
+h3 = "#{Character.count} characters total"
 
 table.table.table-bordered
   thead
@@ -18,6 +20,6 @@ table.table.table-bordered
         td = link_to realm.name, realm
         td = link_to 'Edit', edit_realm_path(realm)
         td = link_to 'Destroy', realm, data: {:confirm => 'Are you sure?'}, :method => :delete
-        td = realm.auction_items.count
-        td = realm.characters.count
+        td = realm.auction_items.size
+        td = realm.characters.size
         td = "#{time_ago_in_words(realm.updated_at)} ago"

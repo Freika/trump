@@ -1,9 +1,18 @@
-p#notice = notice
+h2 = "Name: #{@realm.name}"
 
-p
-  strong Name:
-  = @realm.name
+table.table.table-bordered
+  tr
+    th Предмет
+    th Персонаж
+    th Ставка
+    th Выкуп
+    th Оставшееся время
+  - @realm.auction_items.last(5).each do |item|
+    tr
+      td = "#{item.item.name} (#{item.quantity})"
+      td = item.character.name
+      td = to_gold(item.bid)
+      td = to_gold(item.buyout)
+      td = item.time_left
 
 = link_to 'Edit', edit_realm_path(@realm)
-'|
-= link_to 'Back', realms_path
