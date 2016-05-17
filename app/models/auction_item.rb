@@ -4,4 +4,7 @@ class AuctionItem < ActiveRecord::Base
   belongs_to :character
   belongs_to :item
   belongs_to :realm
+
+  scope :active, -> { where(time_left: %w(VERY_LONG LONG MEDIUM SHORT)) }
+  scope :inactive, -> { where(time_left: 'NONE') }
 end

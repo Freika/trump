@@ -25,6 +25,14 @@ class Realm < ActiveRecord::Base
   def parse_json
     file = File.read("public/temp/#{name}.json")
     hash = JSON.parse(file)
+    auc_ids = hash['auctions'].map { |a| a['auc'] }
+
+    AuctionItem.active.each do |item|
+      unless auc_ids.include?(item.auc)
+        item.update(time_left: 'NONE')
+      end
+    end
+
     hash['auctions'].each do |lot|
       owner = Character.find_or_initialize_by(
         name: lot['owner'], realm_id: id

@@ -1,5 +1,5 @@
 ---
 :verbose: false
 :pidfile: ./tmp/pids/sidekiq.pid
-# :logfile: ./log/sidekiq.log
-:concurrency:  100
+#:logfile: ./log/sidekiq.log
+:concurrency:  10
